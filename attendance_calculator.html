@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Calculator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 16px;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        .result {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            color: #333;
+        }
+        .result.success {
+            border-color: #28a745;
+            background-color: #e9f7e9;
+        }
+        .result.error {
+            border-color: #dc3545;
+            background-color: #f8d7da;
+        }
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Attendance Calculator</h1>
+    <label for="totalClasses">Total Classes:</label>
+    <input type="number" id="totalClasses" placeholder="Enter total classes" required><br>
+
+    <label for="attendedClasses">Attended Classes:</label>
+    <input type="number" id="attendedClasses" placeholder="Enter attended classes" required><br>
+
+    <button onclick="calculateAttendance()">Calculate</button>
+
+    <div id="result" class="result"></div>
+</div>
+
+<footer>
+    Created by Hussain Ali
+</footer>
+
+<script>
+    function calculateAttendance() {
+        let totalClasses = parseInt(document.getElementById("totalClasses").value);
+        let attendedClasses = parseInt(document.getElementById("attendedClasses").value);
+        let attendancePercentage = (attendedClasses / totalClasses) * 100;
+        let requiredClasses = 0;
+
+        // Display current attendance percentage
+        let resultHTML = `<strong>Current Attendance: </strong>${attendancePercentage.toFixed(2)}%<br>`;
+
+        // Calculate required classes to meet 75% attendance
+        while (attendancePercentage < 75) {
+            requiredClasses++;
+            totalClasses++;
+            attendedClasses++;
+            attendancePercentage = (attendedClasses / totalClasses) * 100;
+        }
+
+        // Display result based on calculations
+        if (requiredClasses > 0) {
+            resultHTML += `<strong>You need to attend at least ${requiredClasses} more classes to reach 75% attendance.</strong>`;
+            document.getElementById("result").classList.add("error");
+            document.getElementById("result").classList.remove("success");
+        } else {
+            resultHTML += `<strong>You have already met the 75% attendance requirement.</strong>`;
+            document.getElementById("result").classList.add("success");
+            document.getElementById("result").classList.remove("error");
+        }
+
+        document.getElementById("result").innerHTML = resultHTML;
+    }
+</script>
+
+</body>
+</html>
